@@ -1,4 +1,6 @@
 import Container from "../../Container";
+import MenuDropdown from "../MenuDropdown";
+
 import Logo from "./Logo";
 import Search from "./Search";
 
@@ -12,7 +14,7 @@ const Navbar = () => {
 
     <div><Logo/></div>
     <div><Search></Search></div>
-    <div>Menu</div>
+    <div><MenuDropdown/></div>
 
 
     </div>
