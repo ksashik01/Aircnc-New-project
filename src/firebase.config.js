@@ -15,3 +15,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+
+
+// VITE_apiKey=AIzaSyAyUg9usCSfdICxlmAp0qp4OILRBAyaCs8
+// VITE_authDomain=aircc-november-project.firebaseapp.com
+// VITE_projectId=aircc-november-project
+// VITE_storageBucket=aircc-november-project.appspot.com
+// VITE_messagingSenderId=609545000920
+// VITE_appId=1:609545000920:web:f7e87dd60597e8631344ad
