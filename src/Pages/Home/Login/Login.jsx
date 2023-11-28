@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { Link, useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
+
 import { FcGoogle } from 'react-icons/fc'
 import { useContext } from 'react'
 import { AuthContext } from '../../../providers/AuthProvider'
 import { TbFidgetSpinner } from "react-icons/tb";
+import toast from 'react-hot-toast';
 
 
 const Login = () => {
@@ -19,7 +20,34 @@ const Login = () => {
         logOut,
         updateUserProfile} = useContext(AuthContext);
 
-const navigate = useNavigate()
+const navigate = useNavigate();
+
+
+// ------handle submit-------
+
+const handleSubmit = event =>{
+  event.preventDefault()
+  const email = event.target.email.value
+  const password = event.target.password.value 
+  console.log(email, password);
+
+  signIn(email, password).then(result =>{
+    console.log(result.user)
+    navigate('/')
+
+})
+.catch(err => {
+   setLoading(false)
+    console.log(err.message)
+    toast.error(err.message)
+
+   
+})
+
+}
+
+
+
 // Handle google signin
 
 const handleGoogleSignIn = () =>{
@@ -29,15 +57,16 @@ const handleGoogleSignIn = () =>{
 
     })
     .catch(err=> {
+       setLoading(false)
         console.log(err.message)
         toast.error(err.message)
+       
     })
     
 }
 
 
-
-  return (
+ return (
     <div className='flex justify-center items-center min-h-screen'>
       <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
         <div className='mb-8 text-center'>
@@ -46,7 +75,7 @@ const handleGoogleSignIn = () =>{
             Sign in to access your account
           </p>
         </div>
-        <form
+        <form onSubmit={handleSubmit}
           noValidate=''
           action=''
           className='space-y-6 ng-untouched ng-pristine ng-valid'
