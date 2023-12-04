@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { FcGoogle } from 'react-icons/fc'
-import { useContext } from 'react'
+import { useContext, useRef } from 'react'
 import { AuthContext } from '../../../providers/AuthProvider'
 import { TbFidgetSpinner } from "react-icons/tb";
-import toast from 'react-hot-toast';
+
+import Swal from 'sweetalert2';
 
 
 const Login = () => {
@@ -21,6 +22,9 @@ const Login = () => {
         updateUserProfile} = useContext(AuthContext);
 
 const navigate = useNavigate();
+const emailRef = useRef();
+const location= useLocation();
+const from = location.state?.from?.pathname || '/';
 
 
 // ------handle submit-------
@@ -33,13 +37,18 @@ const handleSubmit = event =>{
 
   signIn(email, password).then(result =>{
     console.log(result.user)
-    navigate('/')
+    navigate(from, {replace : true})
 
 })
 .catch(err => {
    setLoading(false)
     console.log(err.message)
-    toast.error(err.message)
+    Swal.fire({
+      title: 'Error!',
+      text: 'Do you want to continue',
+      icon: 'error',
+      confirmButtonText: 'Cool'
+    })
 
    
 })
@@ -53,7 +62,7 @@ const handleSubmit = event =>{
 const handleGoogleSignIn = () =>{
     signInWithGoogle().then(result =>{
         console.log(result.user)
-        navigate('/')
+        navigate(from, {replace : true})
 
     })
     .catch(err=> {
@@ -64,6 +73,44 @@ const handleGoogleSignIn = () =>{
     })
     
 }
+
+// Hanlde Reset password
+
+const handleReset =() =>{
+  const email = emailRef.current.value
+
+
+
+  // eslint-disable-next-line no-unreachable
+  resetPassword(email).then(()=>{
+    Swal.fire({
+      title: 'Error!',
+      text: 'Please Cheek you email',
+      icon: 'error',
+      confirmButtonText: 'Cool'
+    })
+    setLoading(false)
+
+})
+.catch(err=> {
+
+
+    Swal.fire({
+      title: 'Error!',
+      text: 'Does not input email',
+      icon: 'error',
+      confirmButtonText: 'Cool'
+    })
+
+    setLoading(false)
+})
+
+}
+
+
+
+
+
 
 
  return (
@@ -86,6 +133,7 @@ const handleGoogleSignIn = () =>{
                 Email address
               </label>
               <input
+              ref={emailRef}
                 type='email'
                 name='email'
                 id='email'
@@ -122,7 +170,7 @@ const handleGoogleSignIn = () =>{
           </div>
         </form>
         <div className='space-y-1'>
-          <button className='text-xs hover:underline hover:text-rose-500 text-gray-400'>
+          <button onClick={handleReset} className='text-xs hover:underline hover:text-rose-500 text-gray-400'>
             Forgot password?
           </button>
         </div>
