@@ -1,30 +1,48 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { FcGoogle } from 'react-icons/fc'
-import { useContext, useRef } from 'react'
-import { AuthContext } from '../../../providers/AuthProvider'
+import { useContext } from 'react'
+
 import { TbFidgetSpinner } from "react-icons/tb";
 
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../providers/AuthProvider';
 
 const SignUp = () => {
 
-    const {loading,
-        setLoading,
-     
- 
-        signInWithGoogle,
-        createUser ,
-        updateUserProfile
-  
-        logOut,
-        updateUserProfile} = useContext(AuthContext);
+  // eslint-disable-next-line no-unused-vars
+  const {loading,setLoading,signInWithGoogle,updateUserProfile} = useContext(AuthContext);
 
 const navigate = useNavigate();
 
 const location= useLocation();
 const from = location.state?.from?.pathname || '/';
 
+
+
+
+
+const handleGoogleSignIn = () =>{
+  signInWithGoogle().then(result =>{
+      console.log(result.user)
+      navigate(from, {replace : true})
+
+  })
+  .catch(err=> {
+     setLoading(false)
+      console.log(err.message)
+    
+      Swal.fire({
+        title: 'Error!',
+        text: 'Does not input email',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+  
+     
+  })
+  
+}
 
 
   return (
@@ -97,11 +115,11 @@ const from = location.state?.from?.pathname || '/';
           </div>
 
           <div>
-            <button
+          <button
               type='submit'
               className='bg-rose-500 w-full rounded-md py-3 text-white'
             >
-              Continue
+           {loading ? <TbFidgetSpinner className='mx-auto animate-spin '  size={24}/> : 'Continue' }
             </button>
           </div>
         </form>
@@ -112,7 +130,9 @@ const from = location.state?.from?.pathname || '/';
           </p>
           <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
         </div>
-        <div className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
+        <div
+        onClick={handleGoogleSignIn}
+        className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
           <FcGoogle size={32} />
 
           <p>Continue with Google</p>
