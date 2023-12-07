@@ -23,3 +23,4 @@ export const app = initializeApp(firebaseConfig);
 // VITE_storageBucket=aircc-november-project.appspot.com
 // VITE_messagingSenderId=609545000920
 // VITE_appId=1:609545000920:web:f7e87dd60597e8631344ad
+// VITE_IMGBB_KEY=756d578a51fdb99c5d0eaf7a9627acb7

@@ -11,13 +11,98 @@ import { AuthContext } from '../../providers/AuthProvider';
 const SignUp = () => {
 
   // eslint-disable-next-line no-unused-vars
-  const {loading,setLoading,signInWithGoogle,updateUserProfile} = useContext(AuthContext);
+  const {loading,setLoading,signInWithGoogle,updateUserProfile,createUser} = useContext(AuthContext);
 
 const navigate = useNavigate();
 
 const location= useLocation();
 const from = location.state?.from?.pathname || '/';
 
+
+
+// handle user registration
+
+// eslint-disable-next-line no-unused-vars
+const handleSubmit = event =>{
+event.preventDefault()
+// eslint-disable-next-line no-unused-vars
+const name = event.target.name.value 
+const email = event.target.email.value 
+const password = event.target.password.value 
+
+// image upload
+
+const image = event.target.image.files[0]
+const formData = new FormData()
+formData.append('image',image)
+const url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_KEY}`
+
+fetch (url, {
+method: 'post',
+body:formData,
+
+
+}).then (res => res.json())
+  .then (imageData => {
+ const imageUrl = imageData.data.display_url
+    createUser(email,password).then(result =>{
+      console.log(result.user)
+      updateUserProfile(name,imageUrl)
+      .then (result => {
+        navigate(from, {replace:true})
+      })
+      .catch(err=> {
+        setLoading(false)
+         console.log(err.message)
+       
+         Swal.fire({
+           title: 'Error!',
+           text: 'Does not input email',
+           icon: 'error',
+           confirmButtonText: 'Cool'
+         })
+     
+        
+     })
+
+  })
+  .catch(err=> {
+     setLoading(false)
+      console.log(err.message)
+    
+      Swal.fire({
+        title: 'Error!',
+        text: 'Does not input email',
+        icon: 'error',
+        confirmButtonText: 'Cool'
+      })
+  
+     
+  })
+
+  })
+
+  .catch(err=> {
+    setLoading(false)
+     console.log(err.message)
+   
+     Swal.fire({
+       title: 'Error!',
+       text: 'Does not input email',
+       icon: 'error',
+       confirmButtonText: 'Cool'
+     })
+ 
+    
+ })
+ 
+
+console.log(url)
+return
+
+
+  
+}
 
 
 
@@ -53,6 +138,7 @@ const handleGoogleSignIn = () =>{
           <p className='text-sm text-gray-400'>Welcome to AirCNC</p>
         </div>
         <form
+        onSubmit={handleSubmit}
           noValidate=''
           action=''
           className='space-y-6 ng-untouched ng-pristine ng-valid'
