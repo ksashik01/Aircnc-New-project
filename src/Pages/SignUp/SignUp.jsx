@@ -10,7 +10,7 @@ import { AuthContext } from '../../providers/AuthProvider';
 
 const SignUp = () => {
 
-  // eslint-disable-next-line no-unused-vars
+
   const {loading,setLoading,signInWithGoogle,updateUserProfile,createUser} = useContext(AuthContext);
 
 const navigate = useNavigate();
@@ -20,12 +20,10 @@ const from = location.state?.from?.pathname || '/';
 
 
 
-// handle user registration
 
-// eslint-disable-next-line no-unused-vars
 const handleSubmit = event =>{
 event.preventDefault()
-// eslint-disable-next-line no-unused-vars
+
 const name = event.target.name.value 
 const email = event.target.email.value 
 const password = event.target.password.value 
