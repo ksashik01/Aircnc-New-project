@@ -5,6 +5,7 @@ import Card from './Card/Card';
 
 const Rooms = () => {
     const [rooms, setRooms] = useState([])
+    const [loading, setLoading] = useState(false)
     useEffect(()=> {
     fetch('rooms.json')
     .then(res => res.json())
