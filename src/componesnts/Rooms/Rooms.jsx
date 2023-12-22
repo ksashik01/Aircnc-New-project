@@ -51,7 +51,12 @@ if (loading){
                 
 
                     <div className='pt-12'>
-                        <Heading/>
+                        <Heading
+                          title='No Rooms Available In This Category!'
+                          subtitle='Please Select Other Categories.'
+                          center={true}
+                        
+                        />
 
                     </div>
                 
